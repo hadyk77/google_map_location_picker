@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:android_intent/android_intent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:geolocator/geolocator.dart';
@@ -93,8 +94,8 @@ class MapPickerState extends State<MapPicker> {
   Future<void> _initCurrentLocation() async {
     Position currentPosition;
     try {
-      currentPosition = await Geolocator.getCurrentPosition(
-          desiredAccuracy: widget.desiredAccuracy);
+      currentPosition =
+          await getCurrentPosition(desiredAccuracy: widget.desiredAccuracy);
       d("position = $currentPosition");
 
       setState(() => _currentPosition = currentPosition);
@@ -323,7 +324,7 @@ class MapPickerState extends State<MapPicker> {
   var dialogOpen;
 
   Future _checkGeolocationPermission() async {
-    final geolocationStatus = await Geolocator.checkPermission();
+    final geolocationStatus = await checkPermission();
     d("geolocationStatus = $geolocationStatus");
 
     if (geolocationStatus == LocationPermission.denied && dialogOpen == null) {
@@ -398,7 +399,7 @@ class MapPickerState extends State<MapPicker> {
                 child: Text(S.of(context)?.ok ?? 'Ok'),
                 onPressed: () {
                   Navigator.of(context, rootNavigator: true).pop();
-                  Geolocator.openAppSettings();
+                  openAppSettings();
                   dialogOpen = null;
                 },
               ),
@@ -411,7 +412,7 @@ class MapPickerState extends State<MapPicker> {
 
   // TODO: 9/12/2020 this is no longer needed, remove in the next release
   Future _checkGps() async {
-    if (!(await Geolocator.isLocationServiceEnabled())) {
+    if (!(await isLocationServiceEnabled())) {
       if (Theme.of(context).platform == TargetPlatform.android) {
         showDialog(
           context: context,
