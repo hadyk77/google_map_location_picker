@@ -38,6 +38,7 @@ class MapPicker extends StatefulWidget {
     this.language,
     this.desiredAccuracy,
     this.buttonColor,
+    this.pinColor,
   }) : super(key: key);
 
   final String apiKey;
@@ -64,6 +65,7 @@ class MapPicker extends StatefulWidget {
 
   final LocationAccuracy? desiredAccuracy;
   final Color? buttonColor;
+  final Color? pinColor;
 
   @override
   MapPickerState createState() => MapPickerState();
@@ -301,7 +303,11 @@ class MapPickerState extends State<MapPicker> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.place, size: 56),
+            Icon(
+              Icons.place,
+              size: 56,
+              color: widget.pinColor,
+            ),
             Container(
               decoration: ShapeDecoration(
                 shadows: [

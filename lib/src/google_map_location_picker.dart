@@ -436,6 +436,7 @@ class LocationPickerState extends State<LocationPicker> {
             language: widget.language,
             desiredAccuracy: widget.desiredAccuracy,
             buttonColor: widget.buttonColor,
+            pinColor: widget.buttonColor,
           ),
         );
       }),
