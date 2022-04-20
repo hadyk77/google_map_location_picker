@@ -282,8 +282,7 @@ class MapPickerState extends State<MapPicker> {
           '&key=${widget.apiKey}&language=${widget.language}';
 
       final response = jsonDecode((await http.get(Uri.parse(endpoint),
-              headers: await (LocationUtils.getAppHeaders()
-                  as Future<Map<String, String>?>)))
+              headers: await (LocationUtils.getAppHeaders())))
           .body);
 
       return {
