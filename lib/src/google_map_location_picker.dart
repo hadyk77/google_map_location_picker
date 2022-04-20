@@ -43,6 +43,7 @@ class LocationPicker extends StatefulWidget {
     this.buttonColor,
     this.buttonIcon,
     this.backButton,
+    this.markerColor,
   });
 
   final String apiKey;
@@ -72,6 +73,7 @@ class LocationPicker extends StatefulWidget {
   final Color? buttonColor;
   final Widget? buttonIcon;
   final Widget? backButton;
+  Color? markerColor;
   @override
   LocationPickerState createState() => LocationPickerState();
 }
@@ -476,6 +478,7 @@ Future<LocationResult?> showLocationPicker(
   LocationAccuracy desiredAccuracy = LocationAccuracy.best,
   Color? buttonColor,
   Widget? backbutton,
+  Color? markerColor,
 }) async {
   final results = await Navigator.of(context).push(
     MaterialPageRoute<dynamic>(
@@ -503,6 +506,7 @@ Future<LocationResult?> showLocationPicker(
           desiredAccuracy: desiredAccuracy,
           buttonColor: buttonColor,
           backButton: backbutton,
+          markerColor: markerColor,
         );
       },
     ),
