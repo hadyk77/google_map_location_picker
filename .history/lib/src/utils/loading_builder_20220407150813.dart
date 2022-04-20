@@ -16,7 +16,8 @@ class FutureLoadingBuilder<T> extends StatefulWidget {
     required this.builder,
     this.mutable = false,
     this.loadingIndicator,
-  }) : super(key: key);
+  })  : assert(builder != null),
+        super(key: key);
 
   /// The asynchronous computation to which this builder is currently connected,
   /// possibly null.
@@ -48,8 +49,8 @@ class FutureLoadingBuilder<T> extends StatefulWidget {
       _FutureLoadingBuilderState<T>();
 }
 
-class _FutureLoadingBuilderState<T> extends State<FutureLoadingBuilder<T>> {
-  Future<T>? future;
+class _FutureLoadingBuilderState<T> extends State<FutureLoadingBuilder<T?>> {
+  Future<T?>? future;
 
   @override
   void initState() {
@@ -59,7 +60,7 @@ class _FutureLoadingBuilderState<T> extends State<FutureLoadingBuilder<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<T>(
+    return FutureBuilder<T?>(
       future: widget.mutable ? widget.future : future,
       initialData: widget.initialData,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -97,6 +98,7 @@ class _FutureLoadingBuilderState<T> extends State<FutureLoadingBuilder<T>> {
 
             return widget.builder(context, snapshot.data);
         }
+        return widget.builder(context, snapshot.data);
       },
     );
   }

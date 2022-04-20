@@ -228,7 +228,7 @@ class MapPickerState extends State<MapPicker> {
                 children: <Widget>[
                   Flexible(
                     flex: 20,
-                    child: FutureLoadingBuilder<Map<String, dynamic>?>(
+                    child: FutureLoadingBuilder<Map<String, dynamic>>(
                       future: getAddress(locationProvider.lastIdleLocation),
                       mutable: true,
                       loadingIndicator: Row(
@@ -238,8 +238,8 @@ class MapPickerState extends State<MapPicker> {
                         ],
                       ),
                       builder: (context, data) {
-                        _address = data?["address"];
-                        _placeId = data?["placeId"];
+                        _address = data["address"];
+                        _placeId = data["placeId"];
                         return Text(
                           _address ??
                               S.of(context)?.unnamedPlace ??
