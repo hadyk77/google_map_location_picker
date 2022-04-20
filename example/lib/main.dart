@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
                     LocationResult result = await showLocationPicker(
                       context,
                       //remove
-                      "AIzaSyBXw_8wT-maibLbga09i4zdDJazmJfzfnk",
+                      "apikey",
                       initialCenter: LatLng(31.1975844, 29.9598339),
 //                      automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
