@@ -331,7 +331,7 @@ class MapPickerState extends State<MapPicker> {
   var dialogOpen;
 
   Future _checkGeolocationPermission() async {
-    final geolocationStatus = await Geolocator.checkPermission();
+    final geolocationStatus = await Geolocator.requestPermission();
     d("geolocationStatus = $geolocationStatus");
 
     if (geolocationStatus == LocationPermission.denied && dialogOpen == null) {
