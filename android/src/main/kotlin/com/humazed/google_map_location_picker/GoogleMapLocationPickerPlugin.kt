@@ -13,8 +13,8 @@ import java.math.BigInteger
 import java.security.MessageDigest
 
 
-class GoogleMapLocationPickerPlugin(act: Activity) : MethodCallHandler {
-    var activity: Activity = act
+class GoogleMapLocationPickerPlugin(act: Activity?) : MethodCallHandler {
+    var activity: Activity? = act
 
     companion object {
         @JvmStatic
@@ -32,7 +32,8 @@ class GoogleMapLocationPickerPlugin(act: Activity) : MethodCallHandler {
         if (call.method == "getSigningCertSha1") {
             try {
                 val info: PackageInfo? = activity?.packageManager?.getPackageInfo(call.arguments<String?>(), PackageManager.GET_SIGNATURES)
-                for (signature in info.signatures) {
+                if(info!=null){
+                for (signature in info!.signatures) {
                     val md: MessageDigest = MessageDigest.getInstance("SHA1")
                     md.update(signature.toByteArray())
 
@@ -41,6 +42,7 @@ class GoogleMapLocationPickerPlugin(act: Activity) : MethodCallHandler {
                     val hex: String = String.format("%0" + (bytes.size shl 1) + "x", bigInteger)
 
                     result.success(hex)
+                }
                 }
             } catch (e: Exception) {
                 result.error("ERROR", e.toString(), null)
