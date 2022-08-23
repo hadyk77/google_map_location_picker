@@ -9,7 +9,7 @@ environment:
   flutter: ">=2.0.0"
 
 dependencies:
-  android_intent: ^2.0.0
+  
   flutter:
     sdk: flutter
   flutter_localizations:
