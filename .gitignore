@@ -12,3 +12,4 @@ lib/keys.dart
 /.idea
 /android/.idea/
 .history
+/example/

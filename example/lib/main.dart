@@ -52,16 +52,15 @@ class _MyAppState extends State<MyApp> {
                     LocationResult result = await showLocationPicker(
                       context,
                       //remove
-                      "apikey",
+                      "AIzaSyBXw_8wT-maibLbga09i4zdDJazmJfzfnk",
                       initialCenter: LatLng(31.1975844, 29.9598339),
-//                      automaticallyAnimateToCurrentLocation: true,
+                      automaticallyAnimateToCurrentLocation: true,
 //                      mapStylePath: 'assets/mapStyle.json',
                       myLocationButtonEnabled: true,
-                      // requiredGPS: true,
+                      requiredGPS: true,
                       layersButtonEnabled: true,
-                      // countries: ['AE', 'NG']
 
-//                      resultCardAlignment: Alignment.bottomCenter,
+                      resultCardAlignment: Alignment.bottomCenter,
                       desiredAccuracy: LocationAccuracy.best,
                     );
                     print("result = $result");
