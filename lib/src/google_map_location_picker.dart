@@ -44,6 +44,7 @@ class LocationPicker extends StatefulWidget {
     this.buttonIcon,
     this.backButton,
     this.markerColor,
+    this.bottomWidget,
   });
 
   final String apiKey;
@@ -74,6 +75,7 @@ class LocationPicker extends StatefulWidget {
   final Widget? buttonIcon;
   final Widget? backButton;
   Color? markerColor;
+  final Widget? bottomWidget;
   @override
   LocationPickerState createState() => LocationPickerState();
 }
@@ -152,7 +154,7 @@ class LocationPickerState extends State<LocationPicker> {
       ),
     );
 
-    Overlay.of(context)!.insert(overlayEntry!);
+    Overlay.of(context).insert(overlayEntry!);
 
     autoCompleteSearch(place);
   }
@@ -180,8 +182,7 @@ class LocationPickerState extends State<LocationPicker> {
     }
 
     LocationUtils.getAppHeaders()
-        .then((headers) => http.get(Uri.parse(endpoint),
-            headers: headers as Map<String, String>?))
+        .then((headers) => http.get(Uri.parse(endpoint), headers: headers))
         .then((response) {
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
@@ -230,8 +231,7 @@ class LocationPickerState extends State<LocationPicker> {
             '&language=${widget.language}';
 
     LocationUtils.getAppHeaders()
-        .then((headers) => http.get(Uri.parse(endpoint),
-            headers: headers as Map<String, String>?))
+        .then((headers) => http.get(Uri.parse(endpoint), headers: headers))
         .then((response) {
       if (response.statusCode == 200) {
         Map<String, dynamic> location =
@@ -269,7 +269,7 @@ class LocationPickerState extends State<LocationPicker> {
       ),
     );
 
-    Overlay.of(context)!.insert(overlayEntry!);
+    Overlay.of(context).insert(overlayEntry!);
   }
 
   /// Utility function to get clean readable name of a location. First checks
@@ -301,8 +301,7 @@ class LocationPickerState extends State<LocationPicker> {
               "location=${latLng.latitude},${latLng.longitude}&radius=150" +
               "&language=${widget.language}";
 
-      return http.get(Uri.parse(endpoint),
-          headers: headers as Map<String, String>?);
+      return http.get(Uri.parse(endpoint), headers: headers);
     }).then((response) {
       if (response.statusCode == 200) {
         nearbyPlaces.clear();
@@ -340,8 +339,7 @@ class LocationPickerState extends State<LocationPicker> {
             "&language=${widget.language}";
 
     final response = await http.get(Uri.parse(endpoint),
-        headers: await (LocationUtils.getAppHeaders()
-            as FutureOr<Map<String, String>?>));
+        headers: await (LocationUtils.getAppHeaders()));
 
     if (response.statusCode == 200) {
       Map<String, dynamic> responseJson = jsonDecode(response.body);
@@ -439,6 +437,7 @@ class LocationPickerState extends State<LocationPicker> {
             desiredAccuracy: widget.desiredAccuracy,
             buttonColor: widget.buttonColor,
             pinColor: widget.buttonColor,
+            bottomWidget: widget.bottomWidget,
           ),
         );
       }),
@@ -479,6 +478,7 @@ Future<LocationResult?> showLocationPicker(
   Color? buttonColor,
   Widget? backbutton,
   Color? markerColor,
+  Widget? bottomWidget,
 }) async {
   final results = await Navigator.of(context).push(
     MaterialPageRoute<dynamic>(
@@ -507,6 +507,7 @@ Future<LocationResult?> showLocationPicker(
           buttonColor: buttonColor,
           backButton: backbutton,
           markerColor: markerColor,
+          bottomWidget: bottomWidget,
         );
       },
     ),

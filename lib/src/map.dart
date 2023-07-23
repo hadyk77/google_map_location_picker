@@ -37,6 +37,7 @@ class MapPicker extends StatefulWidget {
     this.desiredAccuracy,
     this.buttonColor,
     this.pinColor,
+    this.bottomWidget,
   }) : super(key: key);
 
   final String apiKey;
@@ -64,6 +65,7 @@ class MapPicker extends StatefulWidget {
   final LocationAccuracy? desiredAccuracy;
   final Color? buttonColor;
   final Color? pinColor;
+  final Widget? bottomWidget;
 
   @override
   MapPickerState createState() => MapPickerState();
@@ -205,7 +207,10 @@ class MapPickerState extends State<MapPicker> {
             onMyLocationPressed: _initCurrentLocation,
           ),
           pin(),
-          locationCard(),
+          if (widget.bottomWidget != null)
+            widget.bottomWidget!
+          else
+            locationCard(),
         ],
       ),
     );
