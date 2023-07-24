@@ -350,23 +350,23 @@ class MapPickerState extends State<MapPicker> {
   var dialogOpen;
 
   Future _checkGeolocationPermission() async {
-    final geolocationStatus = await Geolocator.requestPermission();
-    d("geolocationStatus = $geolocationStatus");
+    try {
+      final geolocationStatus = await Geolocator.requestPermission();
 
-    if (geolocationStatus == LocationPermission.denied && dialogOpen == null) {
-      dialogOpen = _showDeniedDialog();
-    } else if (geolocationStatus == LocationPermission.deniedForever &&
-        dialogOpen == null) {
-      dialogOpen = _showDeniedForeverDialog();
-    } else if (geolocationStatus == LocationPermission.whileInUse ||
-        geolocationStatus == LocationPermission.always) {
-      d('GeolocationStatus.granted');
-
-      if (dialogOpen != null) {
-        Navigator.of(context, rootNavigator: true).pop();
-        dialogOpen = null;
+      if (geolocationStatus == LocationPermission.denied &&
+          dialogOpen == null) {
+        dialogOpen = _showDeniedDialog();
+      } else if (geolocationStatus == LocationPermission.deniedForever &&
+          dialogOpen == null) {
+        dialogOpen = _showDeniedForeverDialog();
+      } else if (geolocationStatus == LocationPermission.whileInUse ||
+          geolocationStatus == LocationPermission.always) {
+        if (dialogOpen != null) {
+          Navigator.of(context, rootNavigator: true).pop();
+          dialogOpen = null;
+        }
       }
-    }
+    } catch (e) {}
   }
 
   Future _showDeniedDialog() {
