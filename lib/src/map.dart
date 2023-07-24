@@ -38,6 +38,7 @@ class MapPicker extends StatefulWidget {
     this.buttonColor,
     this.pinColor,
     this.bottomWidget,
+    this.onCameraIdle,
   }) : super(key: key);
 
   final String apiKey;
@@ -66,6 +67,7 @@ class MapPicker extends StatefulWidget {
   final Color? buttonColor;
   final Color? pinColor;
   final Widget? bottomWidget;
+  final Function(String)? onCameraIdle;
 
   @override
   MapPickerState createState() => MapPickerState();
@@ -187,7 +189,11 @@ class MapPickerState extends State<MapPicker> {
               _lastMapPosition = position.target;
             },
             onCameraIdle: () async {
-              print("onCameraIdle#_lastMapPosition = $_lastMapPosition");
+              if (widget.onCameraIdle != null) {
+                final address = await getAddress(_lastMapPosition);
+                widget.onCameraIdle!(address["address"]);
+              }
+
               LocationProvider.of(context, listen: false)
                   .setLastIdleLocation(_lastMapPosition);
             },
