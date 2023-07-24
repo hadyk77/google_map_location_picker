@@ -43,7 +43,7 @@ class MapPicker extends StatefulWidget {
 
   final String apiKey;
 
-  final LatLng? initialCenter;
+  final Map<String, dynamic>? initialCenter;
   final double? initialZoom;
 
   final bool? requiredGPS;
@@ -171,7 +171,8 @@ class MapPickerState extends State<MapPicker> {
           GoogleMap(
             myLocationButtonEnabled: false,
             initialCameraPosition: CameraPosition(
-              target: widget.initialCenter!,
+              target: LatLng(
+                  widget.initialCenter!['lat'], widget.initialCenter!['lng']),
               zoom: widget.initialZoom!,
             ),
             onMapCreated: (GoogleMapController controller) {
@@ -181,7 +182,8 @@ class MapPickerState extends State<MapPicker> {
                 controller.setMapStyle(_mapStyle);
               }
 
-              _lastMapPosition = widget.initialCenter;
+              _lastMapPosition = LatLng(
+                  widget.initialCenter!['lat'], widget.initialCenter!['lng']);
               LocationProvider.of(context, listen: false)
                   .setLastIdleLocation(_lastMapPosition);
             },

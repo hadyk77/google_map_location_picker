@@ -50,7 +50,7 @@ class LocationPicker extends StatefulWidget {
 
   final String apiKey;
 
-  final LatLng? initialCenter;
+  final Map<String, dynamic>? initialCenter;
   final double? initialZoom;
   final List<String>? countries;
 
@@ -461,7 +461,11 @@ class LocationPickerState extends State<LocationPicker> {
 Future<LocationResult?> showLocationPicker(
   BuildContext context,
   String apiKey, {
-  LatLng initialCenter = const LatLng(45.521563, -122.677433),
+  ///[ Pass latitude as lat , longitude as lng]
+  Map<String, dynamic> initialCenter = const {
+    "lat": 45.521563,
+    "lng": -122.677433
+  },
   double initialZoom = 16,
   bool requiredGPS = false,
   List<String>? countries,
