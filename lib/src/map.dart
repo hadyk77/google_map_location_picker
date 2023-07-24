@@ -67,7 +67,7 @@ class MapPicker extends StatefulWidget {
   final Color? buttonColor;
   final Color? pinColor;
   final Widget? bottomWidget;
-  final Function(String)? onCameraIdle;
+  final Function(LocationResult?)? onCameraIdle;
 
   @override
   MapPickerState createState() => MapPickerState();
@@ -191,7 +191,13 @@ class MapPickerState extends State<MapPicker> {
             onCameraIdle: () async {
               if (widget.onCameraIdle != null) {
                 final address = await getAddress(_lastMapPosition);
-                widget.onCameraIdle!(address["address"]);
+                if (address.containsKey("address")) {
+                  widget.onCameraIdle!(LocationResult(
+                    address: address['address'],
+                    placeId: address['placeId'],
+                    latLng: _lastMapPosition,
+                  ));
+                }
               }
 
               LocationProvider.of(context, listen: false)

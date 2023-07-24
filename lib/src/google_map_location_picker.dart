@@ -77,7 +77,7 @@ class LocationPicker extends StatefulWidget {
   final Widget? backButton;
   Color? markerColor;
   final Widget? bottomWidget;
-  final Function(String)? onCameraIdle;
+  final Function(LocationResult?)? onCameraIdle;
   @override
   LocationPickerState createState() => LocationPickerState();
 }
@@ -482,7 +482,7 @@ Future<LocationResult?> showLocationPicker(
   Widget? backbutton,
   Color? markerColor,
   Widget? bottomWidget,
-  Function(String address)? onCameraIdle,
+  Function(LocationResult? location)? onCameraIdle,
 }) async {
   final results = await Navigator.of(context).push(
     MaterialPageRoute<dynamic>(
