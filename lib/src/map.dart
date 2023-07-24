@@ -208,7 +208,10 @@ class MapPickerState extends State<MapPicker> {
           ),
           pin(),
           if (widget.bottomWidget != null)
-            widget.bottomWidget!
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: widget.bottomWidget!,
+            )
           else
             locationCard(),
         ],
