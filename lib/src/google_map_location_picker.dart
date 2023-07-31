@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_map_location_picker/generated/l10n.dart';
 import 'package:google_map_location_picker/src/map.dart';
+import 'package:google_map_location_picker/src/model/auto_comp_iete_item.dart';
 import 'package:google_map_location_picker/src/providers/location_provider.dart';
 import 'package:google_map_location_picker/src/rich_suggestion.dart';
 import 'package:google_map_location_picker/src/search_input.dart';
@@ -14,7 +15,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
-import 'model/auto_comp_iete_item.dart';
 import 'model/location_result.dart';
 import 'model/nearby_place.dart';
 import 'utils/location_utils.dart';
@@ -162,30 +162,31 @@ class LocationPickerState extends State<LocationPicker> {
   }
 
   /// Fetches the place autocomplete list with the query [place].
-  void autoCompleteSearch(String place) {
-    place = place.replaceAll(" ", "+");
+  Future<void> autoCompleteSearch(String place) async {
+    try {
+      place = place.replaceAll(" ", "+");
 
-    final countries = widget.countries;
+      final countries = widget.countries;
 
-    // Currently, you can use components to filter by up to 5 countries. from https://developers.google.com/places/web-service/autocomplete
-    String regionParam = countries?.isNotEmpty == true
-        ? "&components=country:${countries!.sublist(0, min(countries.length, 5)).join('|country:')}"
-        : "";
+      // Currently, you can use components to filter by up to 5 countries. from https://developers.google.com/places/web-service/autocomplete
+      String regionParam = countries?.isNotEmpty == true
+          ? "&components=country:${countries!.sublist(0, min(countries.length, 5)).join('|country:')}"
+          : "";
 
-    var endpoint =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?" +
-            "key=${widget.apiKey}&" +
-            "input={$place}$regionParam&sessiontoken=$sessionToken&" +
-            "language=${widget.language}";
+      var endpoint =
+          "https://maps.googleapis.com/maps/api/place/autocomplete/json?" +
+              "key=${widget.apiKey}&" +
+              "input={$place}$regionParam&sessiontoken=$sessionToken&" +
+              "language=${widget.language}";
 
-    if (locationResult != null) {
-      endpoint += "&location=${locationResult!.latLng!.latitude}," +
-          "${locationResult!.latLng!.longitude}";
-    }
+      if (locationResult != null) {
+        endpoint += "&location=${locationResult!.latLng!.latitude}," +
+            "${locationResult!.latLng!.longitude}";
+      }
 
-    LocationUtils.getAppHeaders()
-        .then((headers) => http.get(Uri.parse(endpoint), headers: headers))
-        .then((response) {
+      final headers = await LocationUtils.getAppHeaders();
+      final response = await http.get(Uri.parse(endpoint), headers: headers);
+
       if (response.statusCode == 200) {
         Map<String, dynamic> data = jsonDecode(response.body);
         List<dynamic> predictions = data['predictions'];
@@ -216,9 +217,9 @@ class LocationPickerState extends State<LocationPicker> {
 
         displayAutoCompleteSuggestions(suggestions);
       }
-    }).catchError((error) {
-      print(error);
-    });
+    } catch (e) {
+      print(e);
+    }
   }
 
   /// To navigate to the selected place from the autocomplete list to the map,
