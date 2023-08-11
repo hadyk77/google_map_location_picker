@@ -13,7 +13,6 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import 'model/location_result.dart';
-import 'utils/location_utils.dart';
 
 class MapPicker extends StatefulWidget {
   const MapPicker(
@@ -301,9 +300,7 @@ class MapPickerState extends State<MapPicker> {
           'https://maps.googleapis.com/maps/api/geocode/json?latlng=${location?.latitude},${location?.longitude}'
           '&key=${widget.apiKey}&language=${widget.language}';
 
-      final response = jsonDecode((await http.get(Uri.parse(endpoint),
-              headers: await (LocationUtils.getAppHeaders())))
-          .body);
+      final response = jsonDecode((await http.get(Uri.parse(endpoint))).body);
 
       return {
         "placeId": response['results'][0]['place_id'],
