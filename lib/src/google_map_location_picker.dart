@@ -225,17 +225,15 @@ class LocationPickerState extends State<LocationPicker> {
   /// To navigate to the selected place from the autocomplete list to the map,
   /// the lat,lng is required. This method fetches the lat,lng of the place and
   /// proceeds to moving the map to that location.
-  void decodeAndSelectPlace(String? placeId) {
-    clearOverlay();
+  void decodeAndSelectPlace(String? placeId) async {
+    try {
+      clearOverlay();
+      final endpoint =
+          "https://maps.googleapis.com/maps/api/place/details/json?key=${widget.apiKey}" +
+              "&placeid=$placeId" +
+              '&language=${widget.language}';
 
-    final endpoint =
-        "https://maps.googleapis.com/maps/api/place/details/json?key=${widget.apiKey}" +
-            "&placeid=$placeId" +
-            '&language=${widget.language}';
-
-    LocationUtils.getAppHeaders()
-        .then((headers) => http.get(Uri.parse(endpoint), headers: headers))
-        .then((response) {
+      final response = await http.get(Uri.parse(endpoint));
       if (response.statusCode == 200) {
         Map<String, dynamic> location =
             jsonDecode(response.body)['result']['geometry']['location'];
@@ -244,9 +242,9 @@ class LocationPickerState extends State<LocationPicker> {
 
         moveToLocation(latLng);
       }
-    }).catchError((error) {
-      print(error);
-    });
+    } catch (e) {
+      print(e);
+    }
   }
 
   /// Display autocomplete suggestions with the overlay.
